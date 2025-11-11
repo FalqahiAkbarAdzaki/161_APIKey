@@ -22,12 +22,13 @@
       padding: 30px;
       width: 350px;
       text-align: center;
+      position: relative;
     }
     h1 {
       color: #ff4081;
       margin-bottom: 20px;
     }
-    button {
+    .btn {
       background-color: #ff4081;
       color: white;
       border: none;
@@ -36,42 +37,93 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin-bottom: 10px;
     }
-    button:hover {
-      background-color: #ff6699;
+    .btn:hover { background-color: #ff6699; }
+
+    .textarea-wrapper {
+      position: relative;
+      width: 100%;
     }
+
     textarea {
       width: 100%;
       height: 120px;
-      margin-top: 20px;
       border: 2px solid #ff80ab;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px;
       font-size: 14px;
       resize: none;
       background-color: #fff;
       color: #333;
+      box-sizing: border-box;
+    }
+
+    .copy-btn {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background-color: #ff80ab;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .copy-btn:hover { background-color: #ff99bd; }
+
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+      text-align: right;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>CV. Sulit Move-on</h1>
-    <button onclick="buatApiKey()">Create API Key</button>
-    <textarea id="apikey" readonly placeholder="API Key akan muncul di sini..."></textarea>
+
+    <button class="btn" onclick="buatApiKey()">Create API Key</button>
+
+    <div class="textarea-wrapper">
+      <textarea id="apikey" readonly placeholder="API Key akan muncul di sini..."></textarea>
+      <button class="copy-btn" onclick="salinApiKey()">Copy</button>
+    </div>
+    <div class="hint" id="status"></div>
   </div>
 
   <script>
     async function buatApiKey() {
+      const status = document.getElementById('status')
+      status.textContent = ''
       try {
-        const response = await fetch('http://localhost:3000/create', {
-          method: 'POST'
-        })
+        const response = await fetch('http://localhost:3000/create', { method: 'POST' })
         if (!response.ok) throw new Error('Gagal membuat API key')
         const data = await response.json()
         document.getElementById('apikey').value = data.apiKey
       } catch (err) {
         document.getElementById('apikey').value = 'Error: ' + err.message
+      }
+    }
+
+    async function salinApiKey() {
+      const textArea = document.getElementById('apikey')
+      const text = textArea.value.trim()
+      const status = document.getElementById('status')
+      if (!text) {
+        status.textContent = 'Belum ada API Key'
+        return
+      }
+      try {
+        await navigator.clipboard.writeText(text)
+        status.textContent = 'Tersalin ke clipboard'
+        setTimeout(() => status.textContent = '', 1500)
+      } catch (err) {
+        status.textContent = 'Gagal menyalin'
       }
     }
   </script>

@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #200221;
+      background-color: #ffe6f0;
       color: #4a4a4a;
       display: flex;
       justify-content: center;
@@ -16,7 +16,7 @@
       margin: 0;
     }
     .container {
-      background-color: #8f70a6;
+      background-color: #fff0f6;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(255, 0, 128, 0.2);
       padding: 30px;
@@ -24,11 +24,11 @@
       text-align: center;
     }
     h1 {
-      color: #aa31aa;
+      color: #ff4081;
       margin-bottom: 20px;
     }
     button {
-      background-color: #a264a2;
+      background-color: #ff4081;
       color: white;
       border: none;
       border-radius: 12px;
@@ -38,41 +38,42 @@
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #b562b5;
+      background-color: #ff6699;
     }
     textarea {
       width: 100%;
       height: 120px;
       margin-top: 20px;
-      border: 2px solid #741c84;
+      border: 2px solid #ff80ab;
       border-radius: 10px;
       padding: 10px;
       font-size: 14px;
       resize: none;
-      background-color: #bb98b8;
+      background-color: #fff;
       color: #333;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Buat API Key</h1>
+    <h1>CV. Sulit Move-on</h1>
     <button onclick="buatApiKey()">Create API Key</button>
     <textarea id="apikey" readonly placeholder="API Key akan muncul di sini..."></textarea>
   </div>
 
   <script>
-    function buatApiKey() {
-      const randomPart = () => Math.random().toString(36).substring(2, 10).toUpperCase();
-      const apiKey = `API-${randomPart()}-${randomPart()}-${randomPart()}`;
-      document.getElementById('apikey').value = apiKey;
+    async function buatApiKey() {
+      try {
+        const response = await fetch('http://localhost:3000/create', {
+          method: 'POST'
+        })
+        if (!response.ok) throw new Error('Gagal membuat API key')
+        const data = await response.json()
+        document.getElementById('apikey').value = data.apiKey
+      } catch (err) {
+        document.getElementById('apikey').value = 'Error: ' + err.message
+      }
     }
-  async function buatApiKey() {
-    const response = await fetch('/create', { method: 'POST' })
-    const data = await response.json()
-    document.getElementById('apikey').value = data.apiKey
-  }
-
   </script>
 </body>
 </html>

@@ -1,19 +1,26 @@
 const express = require('express')
 const path = require('path')
+const crypto = require('crypto')
 const app = express()
 const port = 3000
 
-// Middleware untuk melayani file statis dari folder "public"
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Endpoint contoh
+// endpoint uji
 app.get('/test', (req, res) => {
   res.send('Hello World!')
 })
 
-// Rute utama: kirim file index.html dari folder public
+// tampilkan index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+// endpoint untuk membuat API key dengan crypto
+app.post('/create', (req, res) => {
+  const apiKey = 'API-' + crypto.randomBytes(16).toString('hex').toUpperCase()
+  res.json({ apiKey })
 })
 
 app.listen(port, () => {

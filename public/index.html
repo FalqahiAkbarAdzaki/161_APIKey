@@ -67,6 +67,12 @@
       const apiKey = `API-${randomPart()}-${randomPart()}-${randomPart()}`;
       document.getElementById('apikey').value = apiKey;
     }
+  async function buatApiKey() {
+    const response = await fetch('/create', { method: 'POST' })
+    const data = await response.json()
+    document.getElementById('apikey').value = data.apiKey
+  }
+
   </script>
 </body>
 </html>

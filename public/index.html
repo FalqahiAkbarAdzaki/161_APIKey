@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembuat API Key</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #200221;
+      color: #4a4a4a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #8f70a6;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(255, 0, 128, 0.2);
+      padding: 30px;
+      width: 350px;
+      text-align: center;
+    }
+    h1 {
+      color: #aa31aa;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #a264a2;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #b562b5;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: 20px;
+      border: 2px solid #741c84;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+      resize: none;
+      background-color: #bb98b8;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Buat API Key</h1>
+    <button onclick="buatApiKey()">Create API Key</button>
+    <textarea id="apikey" readonly placeholder="API Key akan muncul di sini..."></textarea>
+  </div>
+
+  <script>
+    function buatApiKey() {
+      const randomPart = () => Math.random().toString(36).substring(2, 10).toUpperCase();
+      const apiKey = `API-${randomPart()}-${randomPart()}-${randomPart()}`;
+      document.getElementById('apikey').value = apiKey;
+    }
+  </script>
+</body>
+</html>
